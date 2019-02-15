@@ -10,7 +10,7 @@ app.get('/', function (req, res, next) {
             body
                 .split(/[\r\n]+/)
                 .map(obj => obj.split(',')[0])
-                .map(obj => [obj, '*.' + obj].join(os.EOL))
+                .map(obj => [obj, 'www.' + obj].join(os.EOL))
                 .join(os.EOL)
             )
         )
