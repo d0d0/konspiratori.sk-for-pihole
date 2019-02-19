@@ -1,6 +1,6 @@
 # konspiratori.sk-for-pihole
 
-Getting tired of Slovak conspiracy pages? Use this simple parser of `kospiratori.sk` to block these sites.
+Getting tired of Slovak conspiracy pages? Use this simple parser of `konspiratori.sk` to block these sites.
 
 ## Usage
 
