@@ -7,8 +7,10 @@ const app = express();
 let blocked = new Set();
 
 fs.readFile('blocked', (err, data) => {
-    const lines = data.toString().split(os.EOL)
-    blocked = new Set(lines)
+    if (data) {
+        const lines = data.toString().split(os.EOL)
+        blocked = new Set(lines)
+    }
 })
 
 app.get('/', function (req, res, next) {
@@ -20,17 +22,20 @@ app.get('/', function (req, res, next) {
                     .map(obj => [obj, 'www.' + obj])
                     .flatMap(obj => obj)
 
-                blocked.add(actual)
+                actual.forEach((obj) => blocked.add(obj))
                 res.send(Array.from(blocked).join(os.EOL))
             }
         ).catch(next);
 });
 
-process.on('SIGTERM', () => {
+const server = app.listen(5000);
+
+const onKill = () => {
     const values = Array.from(blocked).join(os.EOL)
     fs.writeFile('blocked', values, (err) => {
         process.exit(0);
     });
-});
+}
 
-app.listen(5000);
+process.on('SIGINT', onKill)
+process.on('SIGTERM', onKill)
