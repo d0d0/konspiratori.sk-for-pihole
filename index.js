@@ -16,11 +16,20 @@ fs.readFile('blocked', (err, data) => {
 app.get('/', function (req, res, next) {
     rp('https://www.konspiratori.sk/assets/downloads/zoznam.txt')
         .then((body) => {
-                const actual = body
+                let actual = body
                     .split(/[\r\n]+/)
                     .map(obj => obj.split(',')[0])
                     .map(obj => [obj, 'www.' + obj])
-                    .flatMap(obj => obj)
+
+                if (Array.prototype.flatMap) {
+                    actual = actual.flatMap(obj => obj)
+                } else {
+                    const concat = (x, y) => x.concat(y)
+                    const flatMap = (xs) => xs.reduce(concat, [])
+
+                    actual = flatMap(actual)
+                }
+
 
                 actual.forEach((obj) => blocked.add(obj))
                 res.send(Array.from(blocked).join(os.EOL))
