@@ -14,7 +14,7 @@ fs.readFile('blocked', (err, data) => {
 })
 
 app.get('/', function (req, res, next) {
-    rp('https://www.konspiratori.sk/assets/downloads/zoznam.txt')
+    rp('https://konspiratori.sk/static/lists/zoznam.txt')
         .then((body) => {
                 let actual = body
                     .split(/[\r\n]+/)
